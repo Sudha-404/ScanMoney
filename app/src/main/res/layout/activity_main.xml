@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="ScanMoney"
+        android:gravity="center"
+        android:textColor="@color/PrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Sign In"
+        android:gravity="center"
+        android:textColor="@color/PrimaryDark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        />
+
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:padding="5dp"
+        android:textColorHint="#757575" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:hint="password"
+        android:padding="5dp"
+        android:textColorHint="#757575"
+        app:met_floatingLabel="normal"
+        android:textColor="@color/PrimaryDark"
+        android:inputType="textPassword"
+        app:passwordToggleTint ="@color/PrimaryDark"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/Login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/PrimaryDark"
+        android:text="@string/signin"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+
+
+    <TextView
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:buttonTint="@color/PrimaryDark"
+        android:textStyle="bold"
+        android:text="@string/keep_me_logged_in"
+        android:textColor="@color/PrimaryDark" />
+
+
+    <TextView
+        android:id="@+id/forget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:buttonTint="@color/PrimaryDark"
+        android:textStyle="bold"
+        android:text="@string/forget"
+        android:textColor="@color/PrimaryDark" />
+
+
+</LinearLayout>

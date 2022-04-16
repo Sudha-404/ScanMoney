@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">LoginRegister</string>
+    <string name="forget">Forgotten your Password?</string>
+    <string name="signup">LOGOUT</string>
+    <string name="SignUp">SIGN UP</string>
+    <string name="fullname">FullName</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="keep_me_logged_in">Create a Account</string>
+    <string name="signin">SIGN IN</string>
+    <string name="scanmoney">ScanMoney</string>
+    <string name ="selectimage">Log out</string>
+    <string name="uploadimage">Upload Image</string>
+</resources>
