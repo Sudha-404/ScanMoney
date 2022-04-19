@@ -17,11 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="35dp"
             android:gravity="center"
             android:text="ScanMoney"
             android:textColor="@color/PrimaryDark"
-            android:textSize="24sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
@@ -32,24 +32,9 @@
             android:gravity="center"
             android:text="Sign Up"
             android:textColor="@color/PrimaryDark"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/fullname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:hint="Fullname"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/ic_baseline_account_circle_24"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:padding="5dp"
-            android:textColorHint="#757575"
-            app:met_floatingLabel="normal" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/username"
@@ -57,27 +42,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:drawablePadding="10dp"
             android:drawableRight="@drawable/ic_baseline_account_circle_24"
-            android:hint="Username"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:padding="5dp"
-            android:textColorHint="#757575"
-            app:met_floatingLabel="normal" />
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:drawableRight="@drawable/ic_baseline_visibility_off_24"
-            android:paddingRight="10dp"
             android:drawablePadding="10dp"
-            android:longClickable="false"
+            android:hint="Fullname"
+            android:inputType="textPersonName"
             android:minHeight="48dp"
             android:padding="5dp"
             android:textColorHint="#757575"
@@ -89,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:drawableRight="@drawable/ic_baseline_email_24"
             android:drawablePadding="10dp"
@@ -100,31 +68,73 @@
             android:textColorHint="#757575"
             app:met_floatingLabel="normal" />
 
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="20dp"
+            android:drawableRight="@drawable/ic_baseline_visibility_off_24"
+            android:drawablePadding="10dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:longClickable="false"
+            android:minHeight="48dp"
+            android:padding="5dp"
+            android:paddingRight="10dp"
+            android:textColorHint="#757575"
+            app:met_floatingLabel="normal" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:drawableRight="@drawable/ic_baseline_local_phone_24"
+            android:drawablePadding="10dp"
+            android:hint="Phone"
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:padding="5dp"
+            android:textColorHint="#757575"
+            app:met_floatingLabel="normal" />
+
+
         <Button
             android:id="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@color/PrimaryDark"
+            android:background="@color/accent"
             android:text="@string/SignUp"
 
 
             android:textAllCaps="false"
-            android:textColor="#FFFFFF" />
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/registered"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:buttonTint="@color/PrimaryDark"
-            android:minHeight="50dp"
+            android:minHeight="15dp"
             android:onClick="signin"
             android:text="Already registered? Sign in here"
-            android:textStyle="bold"
             android:textColor="@color/PrimaryDark"
-            tools:ignore="OnClick" />
+            android:textStyle="bold"
+            tools:ignore="OnClick,TouchTargetSizeCheck" />
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible" />
 
 
     </LinearLayout>

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity  {
         progressBar = findViewById(R.id.progressBarmain);
         message = findViewById(R.id.message);
       //  FirebaseUser Fuser = mAuth.getCurrentUser();
-        progressBar.setVisibility(View.INVISIBLE);
+
 
           /**if (!Fuser.isEmailVerified()){
               verifycode.setVisibility(View.VISIBLE);
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity  {
                 }
 
 
-
+                progressBar.setVisibility(View.VISIBLE);
 
 
 
@@ -172,7 +172,6 @@ public class MainActivity extends AppCompatActivity  {
                             if(mAuth.getCurrentUser().isEmailVerified()){
                             Toast.makeText(MainActivity.this,"Sign in Successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(),AppStartActivity.class));
-                                progressBar.setVisibility(View.INVISIBLE);
                         }else{
                                 Toast.makeText(MainActivity.this, "Please verify your email address",Toast.LENGTH_SHORT).show();
 

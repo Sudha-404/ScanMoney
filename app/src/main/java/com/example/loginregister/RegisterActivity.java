@@ -2,11 +2,13 @@ package com.example.loginregister;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -43,9 +45,12 @@ import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
     /** variables for different objects **/
-    MaterialEditText username,email,password,fullname;
+
+    MaterialEditText username,email,password,number;
     Button signup;
     TextView acc;
+
+   ProgressBar progressBar;
     private FirebaseAuth mAuth;
     boolean passwordVisible;
 
@@ -61,9 +66,12 @@ public class RegisterActivity extends AppCompatActivity {
         username = findViewById(R.id.username);
           email = findViewById(R.id.email);
           password = findViewById(R.id.password);
-          fullname = findViewById(R.id.fullname);
+           number = findViewById(R.id.phone);
           signup = findViewById(R.id.signup);
           acc = findViewById(R.id.registered);
+           progressBar=findViewById(R.id.progressBar3);
+
+
 
           mAuth= FirebaseAuth.getInstance();  /** current instance of database from firebase to perform various operations**/
 
@@ -104,51 +112,79 @@ public class RegisterActivity extends AppCompatActivity {
 
 
           signup.setOnClickListener(new View.OnClickListener() {
+              @SuppressLint("ResourceType")
               @Override
               public void onClick(View v) {
 
                   String  txtUserName = username.getText().toString();  /** convert into string as it stay as object **/
                   String  txtEmail = email.getText().toString();
                   String  txtPassword = password.getText().toString();
-                  String  txtFullname= fullname.getText().toString();
+                 String txtnumber = number.getText().toString();
 
-                  if (TextUtils.isEmpty(txtFullname)){
-                      fullname.setError("Full name is required.");
-                      return;
-                  }
+
                   if (TextUtils.isEmpty(txtUserName)){
-                      username.setError("Username is required.");
+                      username.setError("Fullame is required.");
                       return;
-                  } if (txtUserName.length()>15){
-                      username.setError("Username too long");
+                  } if (txtUserName.length()>30){
+                      username.setError("Fullname too long");
                       return;
 
                   }
 
-
-
-
-                   if (TextUtils.isEmpty(txtPassword)){
-                      password.setError("Password is required.");
-                      return;
-                  }
-              if(txtPassword.length()<6){
-                   password.setError("Password must be at least 6 Characters.");
-                   return;
-               }
-
-
-             if (TextUtils.isEmpty(txtEmail)) {
+                  if (TextUtils.isEmpty(txtEmail)) {
                       email.setError("Email is required.");
                       return;
                   }
 
 
 
-                 if(!Patterns.EMAIL_ADDRESS.matcher(txtEmail).matches()){
+
+                  if(!Patterns.EMAIL_ADDRESS.matcher(txtEmail).matches()){
                       email.setError("Please provide valid email.");
                       return;
                   }
+
+
+
+
+                  if (TextUtils.isEmpty(txtPassword)){
+                      password.setError("Password is required.");
+                      return;
+                  }
+              if(txtPassword.length()<6){
+               password.setError("Password should be at least 6 characters");
+               return;
+              }
+              if (!txtPassword.matches("(.*[A-Z].*)")){
+                  password.setError("Password should have minimum one uppercase");
+                      return;
+              }
+                  if (!txtPassword.matches("(.*[a-z].*)")){
+
+                      password.setError("Password should have minimum one lowercase");
+                      return;
+                  }
+                  if (!txtPassword.matches("(.*[0-9].*)")){
+
+                      password.setError("Password should have minimum one digit number");
+                      return;
+                  }
+                  if (!txtPassword.matches("^(.*[!@#$%^&*()_+=?,.<>]).*$")){
+
+                      password.setError("Password should have minimum one special character");
+                      return;
+                  }
+                  if (TextUtils.isEmpty(txtnumber)){
+                      number.setError("Phone number is required.");
+                      return;}
+                  if (!(txtnumber.length() ==10)){
+                      number.setError("Phone number should have 10 digits.");
+                      return;}
+
+
+                 progressBar.setVisibility(View.VISIBLE);
+
+
 
 
 
@@ -169,6 +205,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
+
                                         Toast.makeText(RegisterActivity.this,"User Created.Please check your email for verification. ",Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
@@ -216,5 +253,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
+
 }
+
+
 
