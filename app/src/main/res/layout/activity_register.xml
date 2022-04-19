@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:gravity="center"
             android:text="ScanMoney"
             android:textColor="@color/PrimaryDark"
@@ -42,11 +42,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/fullname"
+            android:hint="Fullname"
+            android:drawablePadding="10dp"
+            android:drawableRight="@drawable/ic_baseline_account_circle_24"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:padding="5dp"
-            android:textColorHint="#757575" />
+            android:textColorHint="#757575"
+            app:met_floatingLabel="normal" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/username"
@@ -54,7 +57,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/username"
+            android:drawablePadding="10dp"
+            android:drawableRight="@drawable/ic_baseline_account_circle_24"
+            android:hint="Username"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:padding="5dp"
@@ -67,8 +72,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/password"
+            android:hint="Password"
             android:inputType="textPassword"
+            android:drawableRight="@drawable/ic_baseline_visibility_off_24"
+            android:paddingRight="10dp"
+            android:drawablePadding="10dp"
+            android:longClickable="false"
             android:minHeight="48dp"
             android:padding="5dp"
             android:textColorHint="#757575"
@@ -82,11 +91,14 @@
             android:layout_marginVertical="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:hint="@string/email"
+            android:drawableRight="@drawable/ic_baseline_email_24"
+            android:drawablePadding="10dp"
+            android:hint="Email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
             android:padding="5dp"
-            android:textColorHint="#757575" />
+            android:textColorHint="#757575"
+            app:met_floatingLabel="normal" />
 
         <Button
             android:id="@+id/signup"

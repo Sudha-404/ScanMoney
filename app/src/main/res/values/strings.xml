@@ -7,7 +7,7 @@
     <string name="email">Email</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="keep_me_logged_in">Create a Account</string>
+    <string name="keep_me_logged_in">Create new Account</string>
     <string name="signin">SIGN IN</string>
     <string name="scanmoney">ScanMoney</string>
     <string name ="selectimage">Log out</string>

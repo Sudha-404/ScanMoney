@@ -3,6 +3,7 @@ package com.example.loginregister;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,10 +13,15 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.HashMap;
@@ -40,12 +47,20 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-    MaterialEditText email, password;
-    Button signin;
+    MaterialEditText email, password, message;
+    Button signin,verifycode;
     TextView create,forget;
+    private ProgressBar progressBar;
+    boolean passwordVisible;
+
+
+
+
+
 
     private FirebaseAuth mAuth;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +72,65 @@ public class MainActivity extends AppCompatActivity  {
         signin = findViewById(R.id.Login);
         create = findViewById(R.id.checkbox);
         forget = findViewById(R.id.forget);
+        verifycode = findViewById(R.id.verifyemail);
+        progressBar = findViewById(R.id.progressBarmain);
+        message = findViewById(R.id.message);
+      //  FirebaseUser Fuser = mAuth.getCurrentUser();
+        progressBar.setVisibility(View.INVISIBLE);
+
+          /**if (!Fuser.isEmailVerified()){
+              verifycode.setVisibility(View.VISIBLE);
+              message.setVisibility(View.VISIBLE);
+
+              verifycode.setOnClickListener(new View.OnClickListener() {
+                  @Override
+                  public void onClick(View v) {
+
+                      Fuser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                          @Override
+                          public void onSuccess(Void unused) {
+                              Toast.makeText(v.getContext(), "Verification email has been sent", Toast.LENGTH_SHORT).show();
+                          }
+                      }).addOnFailureListener(new OnFailureListener() {
+                          @Override
+                          public void onFailure(@NonNull Exception e) {
+                              Log.d("tag", "Email not sent"+e.getMessage());
+                              /** Log.d(,"onFailure:Email not sent "+e.getMessage());
+                          }
+                      });
+                  }
+              });
+
+          }**/
+          password.setOnTouchListener(new View.OnTouchListener() {
+              @SuppressLint("ClickableViewAccessibility")
+              @Override
+              public boolean onTouch(View v, MotionEvent event) {
+                  final int Right = 2;
+                  if(event.getAction()==MotionEvent.ACTION_UP){
+                      if(event.getRawX()>=password.getRight()-password.getCompoundDrawables()[Right].getBounds().width()){
+                          int sel = password.getSelectionEnd();
+                          if(passwordVisible){
+                              password.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_visibility_off_24,0);
+                              password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                              passwordVisible=false;
+                          }else{
+                              password.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_baseline_visibility_24,0);
+                              password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                              passwordVisible=true;
+                          }
+                          password.setSelection(sel);
+                          return true;
+                      }
+                  }
+                  return false;
+              }
+          });
+
+
+
+
+
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,11 +169,17 @@ public class MainActivity extends AppCompatActivity  {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            if(mAuth.getCurrentUser().isEmailVerified()){
                             Toast.makeText(MainActivity.this,"Sign in Successfully", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(),AppStartActivity.class));
+                                progressBar.setVisibility(View.INVISIBLE);
+                        }else{
+                                Toast.makeText(MainActivity.this, "Please verify your email address",Toast.LENGTH_SHORT).show();
+
+                            }
                         }
                         else{
-                            Toast.makeText(MainActivity.this, "Error !"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Error!"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -124,31 +204,33 @@ public class MainActivity extends AppCompatActivity  {
                 pwdresetdialog.setMessage("Please enter your email to received reset link. ");
                 pwdresetdialog.setView(resetemail);
 
-                pwdresetdialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // retrieve email and reset link
-                        String email = resetemail.getText().toString();
-                        mAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                 Toast.makeText(MainActivity.this,"Resent link is sent to your email",Toast.LENGTH_SHORT).show();
-                            }
 
-
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this,"Error ! Cannot sent Resent Link "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-                    }
-                });
                 pwdresetdialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        String email = resetemail.getText().toString();
+                        mAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void avoid) {
+                                Toast.makeText(MainActivity.this, "Resent link is sent to your email",Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this, "Error! Resent Link not found"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+
+                pwdresetdialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
 
                     }
                 });
