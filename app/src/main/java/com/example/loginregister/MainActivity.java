@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity  {
         signin = findViewById(R.id.Login);
         create = findViewById(R.id.checkbox);
         forget = findViewById(R.id.forget);
-        verifycode = findViewById(R.id.verifyemail);
         progressBar = findViewById(R.id.progressBarmain);
         message = findViewById(R.id.message);
       //  FirebaseUser Fuser = mAuth.getCurrentUser();
@@ -137,9 +136,9 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 String user = email.getText().toString().trim();
                 String pwd = password.getText().toString().trim();
-
-                if(!Patterns.EMAIL_ADDRESS.matcher(user).matches()){
-                    email.setError("Please provide valid email.");
+                if (TextUtils.isEmpty(user)&&(TextUtils.isEmpty(pwd))){
+                    email.setError("The field is empty.");
+                    password.setError("The field is empty.");
                     return;
                 }
 
@@ -147,6 +146,13 @@ public class MainActivity extends AppCompatActivity  {
                     email.setError("Email is required.");
                     return;
                 }
+
+                if(!Patterns.EMAIL_ADDRESS.matcher(user).matches()){
+                    email.setError("Please provide valid email.");
+                    return;
+                }
+
+
 
 
                 if (TextUtils.isEmpty(pwd)){

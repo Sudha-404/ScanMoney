@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,8 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
-
+import com.example.loginregister.ml.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,16 +37,30 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import com.rengwuxian.materialedittext.MaterialEditText;
+
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class AppStartActivity extends AppCompatActivity {
     private Button selectimg,uploadimg;
     private ImageView imageview;
+    private TextView result;
     private ProgressBar progressBar;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
     private StorageReference ref = FirebaseStorage.getInstance().getReference();
    ActivityResultLauncher<Intent> activityResultLauncher;
-   private  Uri   imageurl;
+   private Uri imageurl;
+
+
+
+
 
 
     @Override
@@ -58,6 +72,7 @@ public class AppStartActivity extends AppCompatActivity {
     uploadimg= findViewById(R.id.signup2);
     imageview= findViewById(R.id.imageView);
     progressBar = findViewById(R.id.progressBar);
+    result = findViewById(R.id.result1);
 
     progressBar.setVisibility(View.INVISIBLE);
 
@@ -88,6 +103,7 @@ public class AppStartActivity extends AppCompatActivity {
     uploadimg.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+
             if (imageurl != null){
                     uploadToFirebase(imageurl);
             }else{
@@ -157,6 +173,7 @@ public class AppStartActivity extends AppCompatActivity {
 //            imageview.setImageURI(imageurl);
 //        }
 //    }
+
 
 
      }

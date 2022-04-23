@@ -121,14 +121,26 @@ public class RegisterActivity extends AppCompatActivity {
                   String  txtPassword = password.getText().toString();
                  String txtnumber = number.getText().toString();
 
+              if(TextUtils.isEmpty(txtUserName)&&TextUtils.isEmpty(txtEmail)&&TextUtils.isEmpty(txtnumber)&&TextUtils.isEmpty(txtPassword)){
 
-                  if (TextUtils.isEmpty(txtUserName)){
-                      username.setError("Fullame is required.");
-                      return;
-                  } if (txtUserName.length()>30){
+                  username.setError("The field is empty");
+                  email.setError("The field is empty");
+                  password.setError("The field is empty");
+                  number.setError("The field is empty");
+                  return;
+              }
+
+
+
+
+                  if (txtUserName.length()>30){
                       username.setError("Fullname too long");
                       return;
 
+                  }
+                  if (TextUtils.isEmpty(txtUserName)){
+                      username.setError("Fullname is required.");
+                      return;
                   }
 
                   if (TextUtils.isEmpty(txtEmail)) {
