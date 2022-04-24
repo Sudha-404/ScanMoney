@@ -15,6 +15,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,8 +53,10 @@ public class uploadimage extends AppCompatActivity {
     Button logout,upload;
     Bitmap img;
     Uri imageurl;
-    private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
-    private StorageReference ref = FirebaseStorage.getInstance().getReference();
+    int imagesize = 64;
+
+   //* private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
+   // private StorageReference ref = FirebaseStorage.getInstance().getReference();
     ActivityResultLauncher<Intent> activityResultLauncher;
 
 
@@ -69,95 +72,33 @@ public class uploadimage extends AppCompatActivity {
         result = findViewById(R.id.result);
 
 
-        activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result.getResultCode()==RESULT_OK&& result.getData()!= null) {
-                   imageurl= result.getData().getData();
-                    imageView.setImageURI(imageurl);
-                }
-            }
-        });
+
+
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent gallery = new Intent(Intent.ACTION_GET_CONTENT);
-                gallery.setType("image/*");
-                // startActivityForResult(gallery,2);
-                activityResultLauncher.launch(gallery); }
-        });
-        upload.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
 
-                if (imageurl != null) {
-                    img = Bitmap.createScaledBitmap(img, 64, 64, true);
-                    try {
-                        Model model = Model.newInstance(getApplicationContext());
-                        TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
-                        // Creates inputs for reference.
-                        ByteBuffer input = ByteBuffer.allocateDirect(64 * 64 * 3 * 4).order(ByteOrder.nativeOrder());
-                        for (int y = 0; y < 64; y++) {
-                            for (int x = 0; x < 64; x++) {
-                                int px = img.getPixel(x, y);
-
-                                // Get channel values from the pixel value.
-                                int r = Color.red(px);
-                                int g = Color.green(px);
-                                int b = Color.blue(px);
-
-                                // Normalize channel values to [-1.0, 1.0]. This requirement depends
-                                // on the model. For example, some models might require values to be
-                                // normalized to the range [0.0, 1.0] instead.
-                                float rf = (r - 127) / 255.0f;
-                                float gf = (g - 127) / 255.0f;
-                                float bf = (b - 127) / 255.0f;
-
-                                input.putFloat(rf);
-                                input.putFloat(gf);
-                                input.putFloat(bf);
-                            }
-                        }
-
-
-                        inputFeature0.loadBuffer(input);
-
-                        // Runs model inference and gets result.
-                        Model.Outputs outputs = model.process(inputFeature0);
-                        TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-
-                        float[] confid = outputFeature0.getFloatArray();
-                        int max = 0;
-                        float maxconfid = 0;
-                        for (int i = 0; i < confid.length; i++) {
-                            if (confid[i] > maxconfid) {
-                                maxconfid = confid[i];
-                                max = i;
-                            }
-                        }
-
-
-                        String[] classes = {"Fake", "Real"};
-                        result.setText(classes[max]);
-
-
-                        // Releases model resources if no longer used.
-                        model.close();
-
-
-                    } catch (IOException e) {
-                        // TODO Handle the exception
-                    }
-
-                } else {
-                    Toast.makeText(uploadimage.this,"Please select Image",Toast.LENGTH_SHORT).show();
-
+                if(checkSelfPermission(Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED){
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, 3);
+                }else{
+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
                 }
             }
-        }); logout.setOnClickListener(new View.OnClickListener() {
+        }); upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent camerIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(camerIntent,1);
+            }
+        });
+
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
@@ -168,7 +109,7 @@ public class uploadimage extends AppCompatActivity {
 
 
 
-    private void uploadToFirebase(Uri url) {
+  /** private void uploadToFirebase(Uri url) {
 
         StorageReference file = ref.child(System.currentTimeMillis()+"."+getFileExtension(url));
         file.putFile(url).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -181,6 +122,7 @@ public class uploadimage extends AppCompatActivity {
                         Mysingleton model = new Mysingleton(url.toString());
                         String modelid = root.push().getKey();
                         root.child(modelid).setValue(model);
+                        progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(uploadimage.this,"Uploaded successfully",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -188,12 +130,12 @@ public class uploadimage extends AppCompatActivity {
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
+                progressBar.setVisibility(View.VISIBLE);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                progressBar.setVisibility(View.INVISIBLE);
                 Toast.makeText(uploadimage.this, "Uploading Failed!!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -204,6 +146,84 @@ public class uploadimage extends AppCompatActivity {
         ContentResolver CR= getContentResolver();
         MimeTypeMap mi = MimeTypeMap.getSingleton();
         return mi.getExtensionFromMimeType(CR.getType(gurl));
-    }
+    }*/
 
+  public void classifyimage(Bitmap img){
+      try {
+          Model model = Model.newInstance(getApplicationContext());
+
+          // Creates inputs for reference.
+
+          TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 64, 64, 3}, DataType.FLOAT32);
+          ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4*imagesize*imagesize*3);
+         int[] intvalues = new int[imagesize*imagesize];
+         img.getPixels(intvalues, 0, img.getWidth(), 0,0, img.getWidth(), img.getHeight());
+         int px=0;
+         //iterate over each pixel and extract R,G, and B values. add those values individually to the byte buffer.
+         for (int i = 0; i <imagesize;i++){
+             for(int j = 0;j< imagesize;j++){
+                 int value = intvalues[px++];//RGB
+                 byteBuffer.putFloat(((value>>16)&0xFF)*(1.f/1));
+                 byteBuffer.putFloat(((value>>18)&0xFF)*(1.f/1));
+                 byteBuffer.putFloat((value&0xFF)*(1.f/1));
+             }
+         }
+
+
+
+
+
+          inputFeature0.loadBuffer(byteBuffer);//load bytebuffer contain bytes og images
+
+          // Runs model inference and gets result.
+          Model.Outputs outputs = model.process(inputFeature0);// input
+          TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+          float[] confid = outputFeature0.getFloatArray();
+          int max = 0;
+          float maxconfid = 0;
+          for (int i = 0; i < confid.length; i++) {
+              if (confid[i] > maxconfid) {
+                  maxconfid = confid[i];
+                  max = i;
+              }
+          }
+          String[] classes = {"Fake", "Real"};
+          result.setText(classes[max]);
+          // Releases model resources if no longer used.
+          model.close();
+      } catch (IOException e) {
+          // TODO Handle the exception
+      }
+  }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK){
+            if(requestCode == 3){
+                img =(Bitmap) data.getExtras().get("data");
+                int dimension = Math.min(img.getWidth(),img.getHeight());
+                img = ThumbnailUtils.extractThumbnail(img,dimension,dimension);
+                imageView.setImageBitmap(img);
+
+
+                img = Bitmap.createScaledBitmap(img,imagesize, imagesize, false);
+                classifyimage(img);
+            }else{
+                Uri uri = data.getData();
+                 img = null;
+
+                 try{
+                     img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+
+                 }catch (IOException e){
+                     e.printStackTrace();
+                 }
+                 imageView.setImageBitmap(img);
+
+                 img = Bitmap.createScaledBitmap(img, imagesize, imagesize, false);
+                classifyimage(img);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/LoginRegister2/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.19074074074074074" />
+        <entry key="..\:/LoginRegister2/app/src/main/res/drawable/123.xml" value="0.1" />
         <entry key="..\:/LoginRegister2/app/src/main/res/drawable/ic_baseline_add_to_photos_24.xml" value="0.19074074074074074" />
         <entry key="..\:/LoginRegister2/app/src/main/res/drawable/ic_launcher_background.xml" value="0.19074074074074074" />
         <entry key="..\:/LoginRegister2/app/src/main/res/layout/activity_app_start.xml" value="0.264" />
@@ -11,6 +12,7 @@
         <entry key="..\:/LoginRegister2/app/src/main/res/layout/activity_register.xml" value="0.17465224111282843" />
         <entry key="..\:/LoginRegister2/app/src/main/res/layout/activity_signin.xml" value="0.2881773399014778" />
         <entry key="..\:/LoginRegister2/app/src/main/res/layout/bar_layout.xml" value="0.72" />
+        <entry key="..\:/LoginRegister2/app/src/main/res/layout/example.xml" value="0.4" />
       </map>
     </option>
   </component>

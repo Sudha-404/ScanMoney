@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity  {
                         if(task.isSuccessful()){
                             if(mAuth.getCurrentUser().isEmailVerified()){
                             Toast.makeText(MainActivity.this,"Sign in Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(),AppStartActivity.class));
+                            startActivity(new Intent(getApplicationContext(),uploadimage.class));
                         }else{
                                 Toast.makeText(MainActivity.this, "Please verify your email address",Toast.LENGTH_SHORT).show();
 
@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity  {
                         }
                         else{
                             Toast.makeText(MainActivity.this, "Error!"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
                     }
                 });

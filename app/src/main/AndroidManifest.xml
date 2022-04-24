@@ -16,6 +16,9 @@
         <activity
             android:name=".AppStartActivity"
             android:exported="false" />
+        <activity android:name=".uploadimage">
+
+        </activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

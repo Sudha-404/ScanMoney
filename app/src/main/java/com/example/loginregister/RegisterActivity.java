@@ -220,7 +220,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                         Toast.makeText(RegisterActivity.this,"User Created.Please check your email for verification. ",Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
-
+                                        progressBar.setVisibility(View.INVISIBLE);
                                     }
                                 }
                             });
@@ -245,6 +245,7 @@ public class RegisterActivity extends AppCompatActivity {
                            startActivity(new Intent(getApplicationContext(),MainActivity.class));/**  if registered success then go to main activity **/
                        }else{
                            Toast.makeText(RegisterActivity.this,"Error occurred !"+ task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                           progressBar.setVisibility(View.INVISIBLE);
                        }
                    }
                });
